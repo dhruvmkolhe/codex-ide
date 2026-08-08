@@ -29,6 +29,9 @@ jobs:
       - name: Check Code Formatting
         run: npm run format:check
 
+      - name: Run ESLint Code Quality Scan
+        run: npx eslint src/ --max-warnings 0
+
   security-scan:
     name: Security & Secret Scan
     runs-on: ubuntu-latest
@@ -57,7 +60,7 @@ jobs:
         run: npm run audit:check || echo "Security audit warning found"
 
   test:
-    name: Run Unit Tests
+    name: Run Full Test Suite (Frontend, Backend & Infra)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -72,10 +75,10 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Execute Tests
+      - name: Execute Full Test Suite
         env:
           CI: true
-        run: npm test -- --watchAll=false
+        run: npm run test:all
 
   build:
     name: Build Verification
@@ -98,3 +101,4 @@ jobs:
           GENERATE_SOURCEMAP: false
           CI: false
         run: npm run build
+
