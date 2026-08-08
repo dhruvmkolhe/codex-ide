@@ -61,7 +61,7 @@
   },
   "scripts": {
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
-    "start:frontend": "react-scripts start",
+    "start:frontend": "npx cross-env BROWSER=none react-scripts start",
     "start:backend": "node server/index.js",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
