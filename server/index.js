@@ -22,6 +22,8 @@ const {
   renderPrometheusMetrics,
 } = require('./utils/telemetry');
 const semanticCache = require('./utils/semanticCache');
+const swaggerUi = require('swagger-ui-express');
+const openApiDocument = require('../api/openapi.json');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
@@ -319,6 +321,9 @@ app.get('/metrics', (req, res) => {
   res.setHeader('Content-Type', 'text/plain; version=0.0.4');
   res.send(renderPrometheusMetrics(circuitBreaker.getMetrics()));
 });
+
+// Interactive Swagger / OpenAPI Documentation Dashboard
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
 
 // ═══════════════════════════════════════════════════════════════
 // DISTRIBUTED RATE LIMITING WITH REDIS

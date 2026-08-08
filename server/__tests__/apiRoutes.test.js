@@ -40,4 +40,12 @@ describe('Backend API Endpoint Integration Suite', () => {
     assert.strictEqual(gistPayload.public, true);
     assert.ok('main.js' in gistPayload.files);
   });
+
+  test('OpenAPI Swagger Documentation Schema Contract Check', () => {
+    const openApiSchema = require('../../api/openapi.json');
+    assert.strictEqual(openApiSchema.openapi, '3.0.3');
+    assert.strictEqual(openApiSchema.info.title, 'CodeX Cloud IDE Proxy API');
+    assert.ok('/api/ai/chat' in openApiSchema.paths);
+    assert.ok('/api/run' in openApiSchema.paths);
+  });
 });
