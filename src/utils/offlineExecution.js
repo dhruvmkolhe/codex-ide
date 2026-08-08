@@ -17,13 +17,94 @@ export const checkOnlineStatus = () => {
 };
 
 /**
- * Execute JavaScript / TypeScript code locally in a safe Web Worker / Iframe sandbox
+ * Execute JavaScript / TypeScript code locally off-thread using an isolated Web Worker Sandbox
+ * with strict execution timeout safeguards to prevent infinite loops from freezing the UI.
  */
-export const executeJsLocally = (code) => {
+export const executeJsLocally = (code, timeoutMs = 3000) => {
   return new Promise((resolve) => {
-    let output = '';
-    const logs = [];
+    // Check if Web Worker and Blob URLs are supported in browser context
+    if (
+      typeof window !== 'undefined' &&
+      typeof Worker !== 'undefined' &&
+      typeof Blob !== 'undefined' &&
+      typeof URL !== 'undefined' &&
+      typeof URL.createObjectURL === 'function' &&
+      (!process || !process.env || !process.env.JEST_WORKER_ID)
+    ) {
+      try {
+        const workerCode = `
+          self.onmessage = function(e) {
+            var code = e.data;
+            var logs = [];
+            var customConsole = {
+              log: function() { logs.push(Array.prototype.slice.call(arguments).map(function(a){ return typeof a === 'object' ? JSON.stringify(a) : String(a); }).join(' ')); },
+              error: function() { logs.push('[ERROR] ' + Array.prototype.slice.call(arguments).map(function(a){ return typeof a === 'object' ? JSON.stringify(a) : String(a); }).join(' ')); },
+              warn: function() { logs.push('[WARN] ' + Array.prototype.slice.call(arguments).map(function(a){ return typeof a === 'object' ? JSON.stringify(a) : String(a); }).join(' ')); },
+              info: function() { logs.push('[INFO] ' + Array.prototype.slice.call(arguments).map(function(a){ return typeof a === 'object' ? JSON.stringify(a) : String(a); }).join(' ')); }
+            };
+            try {
+              var runFn = new Function('console', code);
+              var res = runFn(customConsole);
+              if (res !== undefined) logs.push('=> ' + (typeof res === 'object' ? JSON.stringify(res) : String(res)));
+              self.postMessage({ success: true, output: logs.join('\\n') || 'Program executed successfully with no output.' });
+            } catch (err) {
+              self.postMessage({ success: false, output: (logs.join('\\n') ? logs.join('\\n') + '\\n' : '') + 'Runtime Error: ' + err.message });
+            }
+          };
+        `;
 
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const blobUrl = URL.createObjectURL(blob);
+        const worker = new Worker(blobUrl);
+
+        let isFinished = false;
+        const timer = setTimeout(() => {
+          if (!isFinished) {
+            isFinished = true;
+            worker.terminate();
+            URL.revokeObjectURL(blobUrl);
+            resolve({
+              success: false,
+              output: `Execution Error: Code exceeded ${timeoutMs}ms execution limit. Terminated to prevent UI freeze.`,
+              isOffline: true,
+              isTerminated: true,
+            });
+          }
+        }, timeoutMs);
+
+        worker.onmessage = (event) => {
+          if (!isFinished) {
+            isFinished = true;
+            clearTimeout(timer);
+            worker.terminate();
+            URL.revokeObjectURL(blobUrl);
+            resolve({ ...event.data, isOffline: true });
+          }
+        };
+
+        worker.onerror = (err) => {
+          if (!isFinished) {
+            isFinished = true;
+            clearTimeout(timer);
+            worker.terminate();
+            URL.revokeObjectURL(blobUrl);
+            resolve({
+              success: false,
+              output: `Worker Execution Exception: ${err.message}`,
+              isOffline: true,
+            });
+          }
+        };
+
+        worker.postMessage(code);
+        return;
+      } catch (e) {
+        /* fallback to in-thread evaluator */
+      }
+    }
+
+    // In-thread fallback for unit testing and non-worker environments
+    const logs = [];
     const customConsole = {
       log: (...args) =>
         logs.push(
@@ -53,12 +134,15 @@ export const executeJsLocally = (code) => {
       if (result !== undefined) {
         logs.push(`=> ${typeof result === 'object' ? JSON.stringify(result) : String(result)}`);
       }
-      output = logs.join('\n') || 'Program executed successfully with no output.';
-      resolve({ success: true, output, isOffline: true });
+      resolve({
+        success: true,
+        output: logs.join('\n') || 'Program executed successfully with no output.',
+        isOffline: true,
+      });
     } catch (err) {
       resolve({
         success: false,
-        output: logs.join('\n') + `\nRuntime Error: ${err.message}`,
+        output: logs.join('\n') + (logs.length ? '\n' : '') + `Runtime Error: ${err.message}`,
         isOffline: true,
       });
     }
