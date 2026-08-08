@@ -1,0 +1,30 @@
+Contact: mailto:security@codex-ide.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://codex-ide.com/.well-known/security.txt
+Policy: https://codex-ide.com/security-policy
+Acknowledgments: https://codex-ide.com/security-hall-of-fame
+
+# Security Vulnerability Disclosure Policy
+# 
+# We take security seriously. If you discover a security vulnerability,
+# please report it responsibly to security@codex-ide.com.
+#
+# Please include:
+# - Description of the vulnerability
+# - Steps to reproduce
+# - Potential impact
+# - Your contact information (for follow-up)
+#
+# We commit to:
+# - Acknowledge receipt within 48 hours
+# - Provide regular updates on remediation progress
+# - Credit researchers in our hall of fame (with permission)
+#
+# Please DO NOT:
+# - Publicly disclose the vulnerability before we've had time to fix it
+# - Access, modify, or delete user data beyond what's needed for POC
+# - Perform destructive testing (DoS, data deletion, etc.)
+#
+# Safe Harbor: We will not pursue legal action against researchers
+# who report vulnerabilities in good faith and follow this policy.

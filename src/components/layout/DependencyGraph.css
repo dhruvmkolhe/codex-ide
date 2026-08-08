@@ -1,0 +1,216 @@
+.dep-graph-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-app, #121212);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  animation: dep-fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dep-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Header */
+.dep-graph-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 48px;
+  background-color: var(--bg-header, #1e1e1e);
+  border-bottom: 1px solid var(--border-color, #333);
+  flex-shrink: 0;
+}
+
+.dep-graph-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--on-surface, #dfe2eb);
+}
+
+.dep-graph-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+  background: rgba(74, 158, 255, 0.15);
+  color: #4a9eff;
+  margin-left: 4px;
+}
+
+.dep-graph-stable-flag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dep-graph-toolbar {
+  height: 40px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border-color, #333);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+
+.dep-graph-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dep-graph-hint {
+  font-size: 11px;
+  color: var(--text-muted, #888);
+  font-style: italic;
+}
+
+.dep-graph-action-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color, #444);
+  color: var(--text-primary, #fff);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dep-graph-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-color, #4a9eff);
+}
+
+.dep-graph-action-btn.primary {
+  background: var(--primary-color, #0e639c);
+  border-color: transparent;
+  color: white;
+}
+
+.dep-graph-action-btn.primary:hover {
+  background: var(--primary-hover, #1177bb);
+}
+
+.dep-graph-close-btn {
+  background: none;
+  border: none;
+  color: var(--on-surface-variant, #c1c7d1);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  transition: all 0.2s;
+}
+
+.dep-graph-close-btn:hover {
+  background: var(--surface-bright, #353940);
+  color: var(--on-surface, #dfe2eb);
+}
+
+/* Canvas */
+.dep-graph-canvas {
+  flex: 1;
+  overflow: hidden;
+  cursor: grab;
+  position: relative;
+  background-image: radial-gradient(rgba(153, 203, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.dep-graph-canvas:active {
+  cursor: grabbing;
+}
+
+/* Edges */
+.dep-edge {
+  stroke: rgba(139, 145, 155, 0.25);
+  stroke-width: 1.5;
+  transition:
+    stroke 0.2s,
+    stroke-width 0.2s;
+}
+
+.dep-edge.active {
+  stroke: rgba(153, 203, 255, 0.6);
+  stroke-width: 2;
+}
+
+/* Node hover */
+.dep-graph-node {
+  cursor: pointer;
+}
+
+.dep-graph-node .node-bg {
+  transition:
+    fill 0.2s,
+    stroke-width 0.2s;
+}
+
+.dep-graph-node:hover .node-bg {
+  filter: brightness(1.2);
+}
+
+.dep-graph-node.selected .node-bg {
+  stroke-width: 3px;
+}
+
+.dep-graph-node.active-file .node-bg {
+  stroke-width: 4px;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Empty state */
+.dep-graph-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--on-surface-variant, #c1c7d1);
+  opacity: 0.5;
+}
+
+.dep-graph-empty svg {
+  opacity: 0.3;
+}
+
+.dep-graph-empty p {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.dep-graph-empty-hint {
+  font-size: 11px !important;
+  opacity: 0.7;
+  font-weight: 400 !important;
+}

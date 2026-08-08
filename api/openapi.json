@@ -1,0 +1,172 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CodeX Cloud IDE Proxy API",
+    "description": "High-performance AI Proxy, Sandboxed Execution, and Telemetry API for CodeX Cloud IDE.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "CodeX Open-Source Team",
+      "url": "https://github.com/dhruvmkolhe/codeX"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5001",
+      "description": "Local Development Server"
+    }
+  ],
+  "paths": {
+    "/api/ai/chat": {
+      "post": {
+        "summary": "AI Completion Proxy Endpoint",
+        "description": "Routes chat completion & inline ghost-text autocompletions through Groq, OpenRouter, or Gemini with circuit breaker fallback.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiChatRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful AI completion response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiChatResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "AI provider service error"
+          }
+        }
+      }
+    },
+    "/api/run": {
+      "post": {
+        "summary": "Sandboxed Code Execution",
+        "description": "Executes user code across 88+ programming languages safely with cgroup limits.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCodeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Code execution result (stdout/stderr)"
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "summary": "Prometheus Telemetry Metrics Exporter",
+        "description": "Exposes standard Prometheus metric text format for API latency, request counters, cache hits, and circuit breaker states.",
+        "responses": {
+          "200": {
+            "description": "Prometheus exposition text format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ai/health": {
+      "get": {
+        "summary": "Local LLM Provider Health Check",
+        "description": "Checks availability of local Ollama or LM Studio models.",
+        "responses": {
+          "200": {
+            "description": "Provider health status"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AiChatRequest": {
+        "type": "object",
+        "required": ["model", "messages"],
+        "properties": {
+          "model": {
+            "type": "string",
+            "example": "llama-3.3-70b-versatile"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": { "type": "string", "example": "user" },
+                "content": { "type": "string", "example": "Write a python function to add two numbers." }
+              }
+            }
+          },
+          "max_tokens": { "type": "integer", "default": 1024 },
+          "temperature": { "type": "number", "default": 0.7 }
+        }
+      },
+      "AiChatResponse": {
+        "type": "object",
+        "properties": {
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "object",
+                  "properties": {
+                    "role": { "type": "string", "example": "assistant" },
+                    "content": { "type": "string", "example": "def add(a, b):\n    return a + b" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "RunCodeRequest": {
+        "type": "object",
+        "required": ["language", "files"],
+        "properties": {
+          "language": { "type": "string", "example": "python" },
+          "stdin": { "type": "string", "default": "" },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string", "example": "main.py" },
+                "content": { "type": "string", "example": "print('Hello World!')" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

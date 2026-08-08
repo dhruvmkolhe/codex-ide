@@ -1,0 +1,35 @@
+# Gitleaks configuration for CodeX
+# Prevents accidental commits of Groq, OneCompiler, and Supabase keys
+
+[allowlist]
+description = "Global allowlist"
+paths = [
+    '''node_modules''',
+    '''build''',
+    '''.git'''
+]
+
+[[rules]]
+description = "Groq API Key"
+id = "groq-api-key"
+regex = '''gsk_[a-zA-Z0-9]{48}'''
+keywords = ["gsk_"]
+
+[[rules]]
+description = "OneCompiler API Key"
+id = "onecompiler-api-key"
+regex = '''oc_[a-zA-Z0-9_]{32,}'''
+keywords = ["oc_"]
+
+[[rules]]
+description = "Supabase Anon/Service Key"
+id = "supabase-key"
+regex = '''eyJh[a-zA-Z0-9]{10,}\.eyJh[a-zA-Z0-9]{10,}\.[a-zA-Z0-9_\-]{30,}'''
+keywords = ["eyJh"]
+
+[[rules]]
+description = "Generic Security Header"
+id = "generic-secret"
+regex = '''(?i)(api_key|apikey|secret|password|auth_token|access_token|bearer)[\s:="']+[0-9a-zA-Z\-_]{16,50}'''
+entropy = 3.5
+keywords = ["key", "secret", "password"]

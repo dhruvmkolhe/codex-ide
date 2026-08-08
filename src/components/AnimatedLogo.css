@@ -1,0 +1,92 @@
+.codex-logo-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.codex-logo-container.sm {
+  width: auto;
+  height: 20px;
+}
+.codex-logo-container.md {
+  width: auto;
+  height: 26px;
+}
+.codex-logo-container.lg {
+  width: auto;
+  height: 48px;
+}
+
+.codex-svg-wholesome {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Wholesome Mascot Animations ── */
+.mascot-wholesome {
+  animation: floatMascot 4s ease-in-out infinite;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.mascot-body {
+  transition: fill 0.3s ease;
+}
+
+.mascot-eye {
+  animation: blinkWholesome 5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes floatMascot {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}
+
+@keyframes blinkWholesome {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+/* ── Wordmark Typography ── */
+.logo-text-wholesome {
+  font-family: 'Architype Stedelijk W00', sans-serif;
+  font-size: 30px;
+  font-weight: normal;
+  text-transform: lowercase;
+  letter-spacing: -0.5px;
+}
+
+.logo-text-wholesome.x-only {
+  font-weight: bold;
+  filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.4));
+  animation: pulseX 3s ease-in-out infinite;
+}
+
+@keyframes pulseX {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* High-fidelity glow for the whole container */
+.codex-logo-container:hover .mascot-wholesome {
+  filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.5));
+}

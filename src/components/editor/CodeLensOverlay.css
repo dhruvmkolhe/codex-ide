@@ -1,0 +1,123 @@
+:root {
+  --lens-green: #4caf82;
+  --lens-blue: #5bafe8;
+  --lens-orange: #e8a45b;
+  --lens-red: #e85b5b;
+  --lens-neutral: #8b919b;
+}
+
+.code-lens-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.code-lens-badge-row {
+  position: absolute;
+  left: 60px; /* Approximately after gutter */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transform: translateY(-100%); /* Sit directly above the function line */
+  padding-bottom: 2px;
+  animation: lensSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes lensSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-80%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-100%) scale(1);
+  }
+}
+
+.code-lens-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: auto;
+  cursor: help;
+  transition: all 0.2s;
+
+  /* Glassmorphism */
+  background-color: rgba(20, 24, 30, 0.7);
+  border: 1px solid color-mix(in srgb, var(--lens-accent, var(--lens-neutral)) 40%, transparent);
+  color: var(--lens-accent, var(--lens-neutral));
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.code-lens-badge:hover {
+  background-color: rgba(30, 35, 42, 0.9);
+  transform: scale(1.05);
+}
+
+.code-lens-badge.tip {
+  color: var(--lens-neutral);
+  border-color: rgba(139, 145, 155, 0.3);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Analyzing indicator */
+.code-lens-analyzing {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--on-surface-variant, #c1c7d1);
+  opacity: 0.7;
+  animation: fadeInOut 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.code-lens-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--lens-blue);
+  animation: pulse 1.5s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.8);
+    opacity: 0.4;
+  }
+}

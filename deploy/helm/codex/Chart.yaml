@@ -1,0 +1,9 @@
+apiVersion: v2
+name: codex
+description: Production Helm Chart for CodeX AI-Powered Collaborative Cloud IDE
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: CodeX Core Architecture Team
+    email: architecture@codex.local

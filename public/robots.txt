@@ -1,0 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow: /api/
+Disallow: /ide/
+Disallow: /.well-known/
+Disallow: /admin/
+Disallow: /static/js/*.map

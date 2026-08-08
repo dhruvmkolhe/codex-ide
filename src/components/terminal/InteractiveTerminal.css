@@ -1,0 +1,76 @@
+.interactive-terminal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.terminal-history {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.terminal-line pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: inherit;
+}
+
+.terminal-line-prompt pre {
+  color: #58a6ff;
+  font-weight: 600;
+}
+
+.terminal-line-info pre {
+  color: #79c0ff;
+}
+
+.terminal-line-success pre {
+  color: #7ee787;
+}
+
+.terminal-line-error pre {
+  color: #ff7b72;
+}
+
+.terminal-line-output pre {
+  color: #c9d1d9;
+}
+
+.terminal-prompt-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #161b22;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.prompt-label {
+  color: #38d415;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f0f6fc;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}

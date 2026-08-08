@@ -1,0 +1,140 @@
+.time-travel-scrubber-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--surface-container, #1c2026);
+  border-top: 1px solid var(--primary, #99cbff);
+  padding: 12px 24px;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.scrubber-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.scrubber-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.scrubber-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--primary, #99cbff);
+  letter-spacing: 0.1em;
+}
+
+.scrubber-timestamp {
+  font-size: 12px;
+  color: var(--on-surface, #dfe2eb);
+  font-weight: 500;
+}
+
+.scrubber-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.scrubber-btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scrubber-btn.restore {
+  background-color: var(--primary, #99cbff);
+  color: var(--on-primary, #003355);
+  border: none;
+}
+
+.scrubber-btn.restore:hover {
+  background-color: var(--primary-fixed-dim, #99cbff);
+  transform: translateY(-1px);
+}
+
+.scrubber-btn.exit {
+  background-color: transparent;
+  color: var(--on-surface-variant, #c1c7d1);
+  border: 1px solid var(--outline-variant, #414750);
+}
+
+.scrubber-btn.exit:hover {
+  background-color: var(--surface-bright, #353940);
+  color: var(--on-surface, #dfe2eb);
+}
+
+.scrubber-track-wrapper {
+  position: relative;
+  padding: 10px 0;
+}
+
+.scrubber-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--surface-bright, #353940);
+  height: 4px;
+  border-radius: 2px;
+  outline: none;
+  position: relative;
+  z-index: 2;
+}
+
+.scrubber-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--primary, #99cbff);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(153, 203, 255, 0.5);
+  border: 2px solid var(--surface-container, #1c2026);
+  transition: transform 0.1s;
+}
+
+.scrubber-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.scrubber-ticks {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+  pointer-events: none;
+}
+
+.scrubber-tick {
+  width: 2px;
+  height: 4px;
+  background-color: var(--outline-variant, #414750);
+  border-radius: 1px;
+}
+
+.scrubber-tick.active {
+  background-color: var(--primary, #99cbff);
+  height: 8px;
+  margin-top: -2px;
+}

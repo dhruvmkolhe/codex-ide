@@ -1,0 +1,60 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Proxy Server Uptime",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "targets": [{ "expr": "codex_uptime_seconds", "format": "time_series" }],
+      "fieldConfig": { "defaults": { "unit": "s" } }
+    },
+    {
+      "title": "Total API Requests",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "targets": [{ "expr": "sum(codex_http_requests_total)", "format": "time_series" }]
+    },
+    {
+      "title": "Cache Hit Ratio",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "targets": [{ "expr": "codex_cache_hits_total / (codex_cache_hits_total + codex_cache_misses_total) * 100", "format": "time_series" }],
+      "fieldConfig": { "defaults": { "unit": "percent" } }
+    },
+    {
+      "title": "AI Circuit Breaker State (0=CLOSED, 1=HALF-OPEN, 2=OPEN)",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "targets": [{ "expr": "codex_circuit_breaker_state", "format": "time_series" }]
+    },
+    {
+      "title": "HTTP Latency Percentiles (p50, p95, p99)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "targets": [
+        { "expr": "codex_http_request_duration_ms{quantile=\"0.5\"}", "legendFormat": "p50 Latency" },
+        { "expr": "codex_http_request_duration_ms{quantile=\"0.95\"}", "legendFormat": "p95 Latency" },
+        { "expr": "codex_http_request_duration_ms{quantile=\"0.99\"}", "legendFormat": "p99 Latency" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "ms" } }
+    },
+    {
+      "title": "AI Completions by Provider & Status",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "targets": [{ "expr": "sum by (provider, status) (codex_ai_chat_requests_total)", "legendFormat": "{{provider}} - {{status}}" }]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["codex", "telemetry", "prometheus"],
+  "time": { "from": "now-1h", "to": "now" },
+  "title": "CodeX Enterprise System Telemetry"
+}

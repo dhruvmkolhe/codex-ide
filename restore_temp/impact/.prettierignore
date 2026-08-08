@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+
+# Build output
+build
+dist
+
+# Lock files
+package-lock.json
+yarn.lock
+
+# Environment files
+.env
+.env.*
+
+# Public static assets
+public

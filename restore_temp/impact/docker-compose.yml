@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./server
+    restart: unless-stopped
+    environment:
+      - GROQ_API_KEY=${REACT_APP_GROQ_API_KEY}
+      - OPENROUTER_API_KEY=${REACT_APP_OPENROUTER_API_KEY}
+      - GEMINI_API_KEY=${REACT_APP_GEMINI_API_KEY}
+      - ONECOMPILER_API_KEY=${REACT_APP_ONECOMPILER_API_KEY}
+      - REACT_APP_SUPABASE_URL=${REACT_APP_SUPABASE_URL}
+      - REACT_APP_SUPABASE_ANON_KEY=${REACT_APP_SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - BACKEND_PORT=5001
+    ports:
+      - "5001:5001"
+
+  app:
+    build:
+      context: .
+      args:
+        - REACT_APP_SUPABASE_URL=${REACT_APP_SUPABASE_URL}
+        - REACT_APP_SUPABASE_ANON_KEY=${REACT_APP_SUPABASE_ANON_KEY}
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
