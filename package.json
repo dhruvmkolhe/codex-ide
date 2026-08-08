@@ -51,6 +51,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.17.0",
     "react-scripts": "^5.0.1",
+    "rate-limiter-flexible": "^11.2.0",
     "redis": "^6.0.0",
     "swagger-ui-express": "^5.0.1",
     "three": "^0.185.0",
