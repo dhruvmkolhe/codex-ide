@@ -99,7 +99,6 @@ export default function ByokSettingsModal({ isOpen, onClose, onShowToast }) {
       <div className="byok-modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="byok-modal-header">
           <div className="byok-modal-title">
-            <span className="byok-title-icon">🔑</span>
             <div>
               <h3>Bring Your Own Key (BYOK) & Provider Settings</h3>
               <p>
@@ -164,7 +163,7 @@ export default function ByokSettingsModal({ isOpen, onClose, onShowToast }) {
                         onClick={() => toggleShowKey(p.id)}
                         title={showKeys[p.id] ? 'Hide Key' : 'Show Key'}
                       >
-                        {showKeys[p.id] ? '🙈' : '👁️'}
+                        {showKeys[p.id] ? 'Hide' : 'Show'}
                       </button>
                     </div>
 
@@ -174,7 +173,7 @@ export default function ByokSettingsModal({ isOpen, onClose, onShowToast }) {
                       onClick={() => handleTestConnection(p.id)}
                       disabled={!p.enabled || testingStatus[p.id]}
                     >
-                      {testingStatus[p.id] ? 'Testing...' : '⚡ Test Connection'}
+                      {testingStatus[p.id] ? 'Testing...' : 'Test Connection'}
                     </button>
                   </div>
 
@@ -184,7 +183,7 @@ export default function ByokSettingsModal({ isOpen, onClose, onShowToast }) {
                         testResults[p.id].success ? 'success' : 'error'
                       }`}
                     >
-                      {testResults[p.id].success ? '✅ ' : '❌ '}
+                      {testResults[p.id].success ? '[OK] ' : '[Error] '}
                       {testResults[p.id].message}
                     </div>
                   )}
@@ -196,7 +195,7 @@ export default function ByokSettingsModal({ isOpen, onClose, onShowToast }) {
                       rel="noopener noreferrer"
                       className="byok-get-key-link"
                     >
-                      🔗 Get {p.name} API Key
+                      Get {p.name} API Key
                     </a>
                   )}
                 </div>
@@ -256,7 +255,7 @@ export default function ByokSettingsModal({ isOpen, onClose, onShowToast }) {
                   </div>
                 </div>
                 <button type="submit" className="byok-add-btn">
-                  ➕ Add Custom Provider
+                  Add Custom Provider
                 </button>
               </form>
 
@@ -278,7 +277,7 @@ export default function ByokSettingsModal({ isOpen, onClose, onShowToast }) {
                           onClick={() => handleDeleteCustom(p.id)}
                           title="Delete Custom Provider"
                         >
-                          🗑️ Delete
+                          Delete
                         </button>
                       </div>
                     </div>

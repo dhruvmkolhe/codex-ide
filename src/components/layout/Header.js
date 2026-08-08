@@ -242,7 +242,7 @@ export const Header = React.memo(function Header({
                         onOpenByokSettings();
                       }}
                     >
-                      🔑 API Keys & BYOK Settings
+                      API Keys & BYOK Settings
                     </button>
                   </div>
                 )}
