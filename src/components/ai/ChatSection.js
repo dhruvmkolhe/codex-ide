@@ -94,6 +94,7 @@ export function ChatSection({
   saveChatSession,
   setChatHistory,
   deleteChatSession,
+  clearAllChatSessions,
   chatSessionsLoading,
   chatSessions,
   isChatLoading,
@@ -250,14 +251,30 @@ export function ChatSection({
                       className="past-conv-search-input"
                       autoFocus
                     />
-                    {handleResetCache && (
+                    {clearAllChatSessions && chatSessions.length > 0 && (
                       <button
                         className="clear-chat-btn"
-                        onClick={handleResetCache}
-                        style={{ fontSize: '11px', padding: '4px 8px', flexShrink: 0 }}
-                        title="Reset local cache"
+                        onClick={() => {
+                          if (
+                            window.confirm('Are you sure you want to clear all past chat history?')
+                          ) {
+                            clearAllChatSessions();
+                            setChatHistory([]);
+                            if (setCurrentSessionId) setCurrentSessionId(null);
+                            if (showToast) showToast('All chat history cleared.', 'info');
+                          }
+                        }}
+                        style={{
+                          fontSize: '11px',
+                          padding: '4px 8px',
+                          flexShrink: 0,
+                          background: 'rgba(239, 68, 68, 0.15)',
+                          color: '#f87171',
+                          borderColor: 'rgba(239, 68, 68, 0.3)',
+                        }}
+                        title="Clear all stored chat history"
                       >
-                        Clear Cache
+                        Clear All History
                       </button>
                     )}
                     <button

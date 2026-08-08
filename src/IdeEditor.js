@@ -410,6 +410,7 @@ export default function IdeEditor(props) {
     chatSessionsLoading,
     saveChatSession,
     deleteChatSession,
+    clearAllChatSessions,
     handleMfaEnroll,
     handleMfaVerify,
     handleMfaUnenroll,
@@ -2507,6 +2508,7 @@ Provide ONLY the raw code itself. If you output markdown block, format it inside
           saveChatSession={saveChatSession}
           setChatHistory={setChatHistory}
           deleteChatSession={deleteChatSession}
+          clearAllChatSessions={clearAllChatSessions}
           chatSessionsLoading={chatSessionsLoading}
           chatSessions={chatSessions}
           isChatLoading={isChatLoading}

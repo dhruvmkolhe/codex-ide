@@ -160,6 +160,27 @@ export function useAIChat({ user, selectedLanguage, showToast, setShowSqlGuide }
     [user, currentSessionId]
   );
 
+  const clearAllChatSessions = useCallback(async () => {
+    setLocalSessions([]);
+    try {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      localStorage.removeItem('codex_chatHistory');
+    } catch (e) {
+      // ignore storage error
+    }
+
+    if (supabase && user) {
+      try {
+        await supabase.from('chat_sessions').delete().eq('user_id', user.id);
+      } catch (err) {
+        console.error('Clear all chat sessions error:', err);
+      }
+    }
+
+    setCurrentSessionId(null);
+    setChatSessions([]);
+  }, [user]);
+
   useEffect(() => {
     fetchChatSessions();
   }, [user, fetchChatSessions]);
@@ -170,6 +191,7 @@ export function useAIChat({ user, selectedLanguage, showToast, setShowSqlGuide }
     fetchChatSessions,
     saveChatSession,
     deleteChatSession,
+    clearAllChatSessions,
     currentSessionId,
     setCurrentSessionId,
   };
