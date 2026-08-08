@@ -233,9 +233,9 @@ app.post(
   async (req, res) => {
   const { model, messages, max_tokens, stop, temperature } = req.body;
   
-  const groqApiKey = process.env.GROQ_API_KEY;
-  const openrouterApiKey = process.env.OPENROUTER_API_KEY;
-  const geminiApiKey = process.env.GEMINI_API_KEY;
+  const groqApiKey = req.headers['x-groq-api-key'] || process.env.GROQ_API_KEY;
+  const openrouterApiKey = req.headers['x-openrouter-api-key'] || process.env.OPENROUTER_API_KEY;
+  const geminiApiKey = req.headers['x-gemini-api-key'] || process.env.GEMINI_API_KEY;
 
   if (!groqApiKey && !openrouterApiKey && !geminiApiKey) {
     return res.status(500).json({ error: 'AI service configuration error.' });
@@ -379,7 +379,7 @@ const validateCodeExecution = (req, res, next) => {
 
 // Code Execution Proxy
 app.post('/api/run', authenticate, runLimiter, validateRequest(runSchema), validateCodeExecution, async (req, res) => {
-  const compilerApiKey = process.env.ONECOMPILER_API_KEY;
+  const compilerApiKey = req.headers['x-onecompiler-api-key'] || process.env.ONECOMPILER_API_KEY;
 
   if (!compilerApiKey) {
     return res.status(500).json({ error: 'Execution service configuration error.' });

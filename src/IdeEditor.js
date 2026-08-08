@@ -27,6 +27,8 @@ import { ToastContainer } from './components/common/ToastContainer';
 import SnapshotModal from './components/ui/SnapshotModal';
 import CommandPalette from './components/ui/CommandPalette';
 import { executeCodeOfflineFallback } from './utils/offlineExecution';
+import { getByokHeaders } from './utils/byokProviderService';
+import ByokSettingsModal from './components/modals/ByokSettingsModal';
 
 import {
   LANGUAGE_CATEGORIES,
@@ -86,6 +88,7 @@ export default function IdeEditor(props) {
     localStorage.setItem('codex_model', 'llama-3.1-8b-instant');
     return 'llama-3.1-8b-instant';
   });
+  const [isByokOpen, setIsByokOpen] = useState(false);
   const mainContentRef = useRef(null);
   const leftSectionRef = useRef(null);
   const rightSectionRef = useRef(null);
@@ -1344,6 +1347,7 @@ export default function IdeEditor(props) {
       const response = await axios.post('/api/run', payload, {
         headers: {
           Authorization: `Bearer ${session.access_token}`,
+          ...getByokHeaders(),
         },
       });
       let outputText = '';
@@ -2237,6 +2241,7 @@ Provide ONLY the raw code itself. If you output markdown block, format it inside
           showToast(`UI Style: ${l.charAt(0).toUpperCase() + l.slice(1)}`, 'info');
         }}
         onOpenWhiteboard={() => setIsWhiteboardOpen(true)}
+        onOpenByokSettings={() => setIsByokOpen(true)}
       />
 
       <div className={`main-content mobile-tab-${mobileActiveTab}`} ref={mainContentRef}>
@@ -2609,6 +2614,12 @@ Provide ONLY the raw code itself. If you output markdown block, format it inside
         selectedLanguage={selectedLanguage}
         onApplyRefactoredCode={(newCode) => handleCodeChange(newCode)}
         showToast={showToast}
+      />
+
+      <ByokSettingsModal
+        isOpen={isByokOpen}
+        onClose={() => setIsByokOpen(false)}
+        onShowToast={showToast}
       />
 
       <ToastContainer toasts={toasts} />

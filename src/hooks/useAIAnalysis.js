@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import axios from 'axios';
 import { supabase } from '../supabaseClient';
 import { queryLocalLlm } from '../utils/localLlmService';
+import { getByokHeaders } from '../utils/byokProviderService';
 
 export const useAIAnalysis = ({
   code,
@@ -72,7 +73,10 @@ export const useAIAnalysis = ({
           stop: options.stop,
         },
         {
-          headers: { Authorization: `Bearer ${session.access_token}` },
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+            ...getByokHeaders(),
+          },
         }
       );
     },

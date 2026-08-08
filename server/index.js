@@ -504,9 +504,9 @@ app.use('/api/', apiLimiter);
 // AI Chat Endpoint with Circuit Breaker, Semantic Cache, and Multi-Provider Fallback
 const handleAiChat = async (req, res) => {
   const { model = 'llama-3.3-70b-versatile', messages, max_tokens, stop, temperature } = req.body;
-  const groqApiKey = process.env.GROQ_API_KEY;
-  const openrouterApiKey = process.env.OPENROUTER_API_KEY;
-  const geminiApiKey = process.env.GEMINI_API_KEY;
+  const groqApiKey = req.headers['x-groq-api-key'] || process.env.GROQ_API_KEY;
+  const openrouterApiKey = req.headers['x-openrouter-api-key'] || process.env.OPENROUTER_API_KEY;
+  const geminiApiKey = req.headers['x-gemini-api-key'] || process.env.GEMINI_API_KEY;
 
   if (!groqApiKey && !openrouterApiKey && !geminiApiKey) {
     return res.status(500).json({ error: 'AI service configuration error.' });
@@ -920,7 +920,7 @@ app.post(
   validateRequest(runSchema),
   validateCodeExecution,
   async (req, res) => {
-    const compilerApiKey = process.env.ONECOMPILER_API_KEY;
+    const compilerApiKey = req.headers['x-onecompiler-api-key'] || process.env.ONECOMPILER_API_KEY;
     const { language, files, stdin } = req.body;
 
     const startTime = Date.now();

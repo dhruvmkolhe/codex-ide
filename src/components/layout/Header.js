@@ -48,6 +48,7 @@ export const Header = React.memo(function Header({
   lastSavedTime,
   user,
   setShowAuthModal,
+  onOpenByokSettings,
   fileInputRef,
   handleFileUpload,
   workspaceMode,
@@ -217,6 +218,34 @@ export const Header = React.memo(function Header({
                     </button>
                   </div>
                 </div>
+                {onOpenByokSettings && (
+                  <div className="dropdown-settings-group">
+                    <button
+                      className="byok-header-trigger-btn"
+                      style={{
+                        width: '100%',
+                        background: 'rgba(59, 130, 246, 0.15)',
+                        border: '1px solid rgba(59, 130, 246, 0.3)',
+                        color: '#60a5fa',
+                        padding: '0.5rem',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontWeight: '600',
+                        fontSize: '0.82rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justify: 'center',
+                        gap: '0.4rem',
+                      }}
+                      onClick={() => {
+                        setActiveMenu(null);
+                        onOpenByokSettings();
+                      }}
+                    >
+                      🔑 API Keys & BYOK Settings
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
